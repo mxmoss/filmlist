@@ -23,10 +23,11 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^genres$', views.genre_list),
     url(r'^genres/(?P<pk>[0-9]+)$', views.genre_detail),
+    url(r'^genres/(?P<pk>[0-9]+)/films$', views.genre_films),
     url(r'^films$', views.film_list),
     url(r'^films/(?P<pk>[0-9]+)$', views.film_detail),
-    url(r'^films/(?P<genre>[0-9]+)$/films', views.film_detail), #, name="genre"
+    url(r'^films/(?P<pk>[0-9]+)/theaters$', views.film_theaters),
     url(r'^theaters$', views.theater_list),
     url(r'^theaters/(?P<pk>[0-9]+)$', views.theater_detail),
-    url(r'^theater_films/(?P<pk>[0-9]+)$', views.theater_films),
+    url(r'^theaters/(?P<pk>[0-9]+)/films$', views.theater_films),
 ]
