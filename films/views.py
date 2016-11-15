@@ -7,7 +7,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
 @api_view(['GET', 'POST'])
 def genre_list(request, format=None):
     """
@@ -148,46 +147,46 @@ def theater_detail(request, pk, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
-def genre_films(request, pk, format=None):
-    """
-    Retrieve all films of a certain genre
-    """
-    try:
-        films = Film.objects.all().filter(genre_id=pk)
-    except Genre.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializedFilm = FilmSerializer(films, many=True)
-        return Response(serializedFilm.data)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def theater_films(request, pk, format=None):
-    """
-    Retrieve all films at a given theater.
-    """
-    try:
-        theater = Theater.objects.get(pk=pk)
-    except Theater.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = FilmSerializer(theater.film.all(), many=True)
-        return Response(serializer.data)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def film_theaters(request, pk, format=None):
-    """
-    Retrieve all theaters at which a given film is playing
-    """
-    try:
-        film = Film.objects.get(pk=pk)
-    except Film.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = TheaterSerializer(film.theaters.all(), many=True)
-        return Response(serializer.data)
+# @api_view(['GET'])
+# def genre_films(request, pk, format=None):
+#     """
+#     Retrieve all films of a certain genre
+#     """
+#     try:
+#         films = Film.objects.all().filter(genre_id=pk)
+#     except Genre.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     if request.method == 'GET':
+#         serializedFilm = FilmSerializer(films, many=True)
+#         return Response(serializedFilm.data)
+#
+#
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def theater_films(request, pk, format=None):
+#     """
+#     Retrieve all films at a given theater.
+#     """
+#     try:
+#         theater = Theater.objects.get(pk=pk)
+#     except Theater.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     if request.method == 'GET':
+#         serializer = FilmSerializer(theater.film.all(), many=True)
+#         return Response(serializer.data)
+#
+#
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def film_theaters(request, pk, format=None):
+#     """
+#     Retrieve all theaters at which a given film is playing
+#     """
+#     try:
+#         film = Film.objects.get(pk=pk)
+#     except Film.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     if request.method == 'GET':
+#         serializer = TheaterSerializer(film.theaters.all(), many=True)
+#         return Response(serializer.data)
