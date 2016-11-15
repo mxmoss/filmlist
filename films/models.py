@@ -9,7 +9,7 @@ class Film(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     year_prod = models.IntegerField(blank=True,)
     genre = models.ForeignKey(Genre,blank=True,)
-    theaters = models.ManyToManyField(Theater, blank=True,)
+    theaters = models.ManyToManyField('Theater', blank=True,)
     class Meta:
 #        ordering = ('title',)
         ordering = ('id',)
