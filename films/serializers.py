@@ -9,7 +9,7 @@ class FilmSerializer(serializers.ModelSerializer):
 class TheaterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theater
-        fields = ('id', 'name', 'city', 'state', 'num_screens', 'digital', 'comment_txt')
+        fields = ('id', 'name', 'city', 'state', 'num_screens', 'digital', 'comment_txt', 'film_set')
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:

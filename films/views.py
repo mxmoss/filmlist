@@ -59,9 +59,11 @@ def film_list(request, format=None):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+#        serializedFilm = FilmWriteSerializer(data=request.data)
         serializer = FilmSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+#        return Response(serializedFilm.data, status=status.HTTP_201_CREATED)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,8 +155,8 @@ def genre_films(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = FilmSerializer(films, many=True)
-        return Response(serializer.data)
+        serializedFilm = FilmSerializer(films, many=True)
+        return Response(serializedFilm.data)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def theater_films(request, pk, format=None):
@@ -181,5 +183,5 @@ def film_theaters(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = TheaterSerializer(film.theaters, many=True)
+        serializer = TheaterSerializer(film.theaters.all(), many=True)
         return Response(serializer.data)
