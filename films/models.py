@@ -1,15 +1,13 @@
 from django.db import models
 
-
 class Genre(models.Model):
     description = models.CharField(max_length=20, blank=True, default='')
 
     class Meta:
         ordering = ('description',)
 
-
-def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.description
 
 
 class Film(models.Model):
@@ -21,6 +19,9 @@ class Film(models.Model):
     class Meta:
         #        ordering = ('title',)
         ordering = ('id',)
+
+    def __str__(self):
+        return self.title
 
 class Theater(models.Model):
     name = models.CharField(max_length=40, blank=True, default='')
@@ -34,3 +35,6 @@ class Theater(models.Model):
     class Meta:
         #        ordering = ('state', 'city', 'name',)
         ordering = ('id',)
+
+    def __str__(self):
+        return self.name
