@@ -3,9 +3,10 @@ import json
 
 from .views import *
 
+
 # Create your tests here.
 class SimpleTest(TestCase):
-#    reset_sequences = True
+    #    reset_sequences = True
 
     def setUp(self):
         # Every test needs access to the request factory.
@@ -18,7 +19,6 @@ class SimpleTest(TestCase):
         response = genre_list(request)
         self.assertEqual(response.status_code, 200)
 
-
     def test_POST_genres(self):
         # Create an instance of a post request.
         request = self.factory.post('/genres', {"description": "Fantasy"}, format='json')
@@ -28,7 +28,6 @@ class SimpleTest(TestCase):
         self.assertEqual(response.status_code, 201)
         # make sure it exists
         self.assertEqual(response.data['description'], 'Fantasy')
-
 
     def test_PUT_genres(self):
         # Create an instance of a post request.
@@ -42,7 +41,6 @@ class SimpleTest(TestCase):
         # Test genre_detail() as if it were deployed at /genres
         response = genre_detail(request, pk=1)
         self.assertEqual(response.status_code, 200)
-
 
     def test_DELETE_genres(self):
         # Create an instance of a post request.
@@ -68,38 +66,38 @@ class SimpleTest(TestCase):
     def test_POST_theaters(self):
         # Create an instance of a post request.
         request = self.factory.post('/theaters',
-              {
-                 "name": "Theater Name",
-                 "city": "Theater City",
-                 "state": "OR",
-                 "num_screens": 3,
-                 "digital": True,
-                 "comment_txt": "This is a theater comment"
-                 }, format='json')
+                                    {
+                                        "name": "Theater Name",
+                                        "city": "Theater City",
+                                        "state": "OR",
+                                        "num_screens": 3,
+                                        "digital": True,
+                                        "comment_txt": "This is a theater comment"
+                                    }, format='json')
         # Test theater_list() as if it were deployed at /theaters
         response = theater_list(request)
         # test status
         self.assertEqual(response.status_code, 201)
-        #make sure it exists
-        self.assertEqual(response.data['name'], 'Theater Name' )
+        # make sure it exists
+        self.assertEqual(response.data['name'], 'Theater Name')
 
     def test_PUT_theaters(self):
         # Create an instance of a post request.
         request = self.factory.post('/theaters/1',
-                  {
-                      "name": "Theater Name",
-                      "city": "Theater City",
-                      "state": "OR",
-                      "num_screens": 3,
-                      "digital": True,
-                      "comment_txt": "This is a theater comment"
-                  }, format='json')
+                                    {
+                                        "name": "Theater Name",
+                                        "city": "Theater City",
+                                        "state": "OR",
+                                        "num_screens": 3,
+                                        "digital": True,
+                                        "comment_txt": "This is a theater comment"
+                                    }, format='json')
         response = theater_list(request)
         self.assertEqual(response.status_code, 201)
         response.render()
 
         # Create an instance of a put request.
-        request = self.factory.put('/theaters/1', {"id":1, "name":"Avalon Theater"})
+        request = self.factory.put('/theaters/1', {"id": 1, "name": "Avalon Theater"})
         # Test theater_detail() as if it were deployed at /theaters
         response = theater_detail(request, pk=1)
         self.assertEqual(response.status_code, 200)
@@ -107,14 +105,14 @@ class SimpleTest(TestCase):
     def test_DELETE_theaters(self):
         # Create an instance of a post request.
         request = self.factory.post('/theaters',
-                  {
-                      "name": "Theater Name",
-                      "city": "Theater City",
-                      "state": "OR",
-                      "num_screens": 3,
-                      "digital": True,
-                      "comment_txt": "This is a theater comment"
-                  }, format='json')
+                                    {
+                                        "name": "Theater Name",
+                                        "city": "Theater City",
+                                        "state": "OR",
+                                        "num_screens": 3,
+                                        "digital": True,
+                                        "comment_txt": "This is a theater comment"
+                                    }, format='json')
         response = theater_list(request)
         self.assertEqual(response.status_code, 201)
         response.render()
@@ -132,7 +130,6 @@ class SimpleTest(TestCase):
         # Test film_list() as if it were deployed at /films
         response = film_list(request)
         self.assertEqual(response.status_code, 200)
-
 
     def test_POST_films(self):
         # Create an instance of a post request.
@@ -153,7 +150,6 @@ class SimpleTest(TestCase):
         # make sure it exists
         self.assertEqual(response.data['title'], 'Film Title')
 
-
     def test_PUT_films(self):
         # Create an instance of a post request.
         request = self.factory.post('/films/1',
@@ -172,7 +168,6 @@ class SimpleTest(TestCase):
         # Test film_detail() as if it were deployed at /films
         response = film_detail(request, pk=1)
         self.assertEqual(response.status_code, 200)
-
 
     def test_DELETE_films(self):
         # Create an instance of a post request.

@@ -2,10 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from films.models import *
-from films.serializers import FilmSerializer, TheaterSerializer, GenreSerializer
+from films.serializers import *
 import logging
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 @api_view(['GET', 'POST'])
 def genre_list(request, format=None):
@@ -22,6 +23,7 @@ def genre_list(request, format=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def genre_detail(request, pk, format=None):
@@ -48,6 +50,7 @@ def genre_detail(request, pk, format=None):
         genre.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET', 'POST'])
 def film_list(request, format=None):
     """
@@ -59,11 +62,12 @@ def film_list(request, format=None):
         return Response(serializer.data)
 
     elif request.method == 'POST':
-#        serializedFilm = FilmWriteSerializer(data=request.data)
-        serializer = FilmSerializer(data=request.data)
+        #        serializedFilm = FilmWriteSerializer(data=request.data)
+        serializer = FilmWriteSerializer(data=request.data)
+#        print(serializer)
         if serializer.is_valid():
             serializer.save()
-#        return Response(serializedFilm.data, status=status.HTTP_201_CREATED)
+            #        return Response(serializedFilm.data, status=status.HTTP_201_CREATED)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -158,6 +162,7 @@ def genre_films(request, pk, format=None):
         serializedFilm = FilmSerializer(films, many=True)
         return Response(serializedFilm.data)
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def theater_films(request, pk, format=None):
     """
@@ -169,8 +174,9 @@ def theater_films(request, pk, format=None):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = FilmSerializer(theater.film_set, many=True)
+        serializer = FilmSerializer(theater.film.all(), many=True)
         return Response(serializer.data)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def film_theaters(request, pk, format=None):
