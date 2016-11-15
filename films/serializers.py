@@ -1,23 +1,24 @@
 from rest_framework import serializers
 from films.models import *
 
+class FilmSerializer(serializers.ModelSerializer):
+    theater_set = serializers.StringRelatedField(many=True)
+    genre = serializers.StringRelatedField()
+    class Meta:
+        model = Film
+        fields = ('id', 'title', 'year_prod', 'genre', 'theater_set')
+
 
 class GenreSerializer(serializers.ModelSerializer):
+    film_set = FilmSerializer(many=True)
     class Meta:
         model = Genre
         fields = ('id', 'description', 'film_set')
 
 
-class FilmSerializer(serializers.ModelSerializer):
-    genre = GenreSerializer()
-
-    class Meta:
-        model = Film
-        fields = ('id', 'title', 'year_prod', 'genre')  # , 'theaters')
-
-
 class FilmWriteSerializer(serializers.ModelSerializer):
     genre = serializers.PrimaryKeyRelatedField(queryset=Genre.objects.all(), allow_null=True)
+#    genre = serializers.FilmSerializer( many=True)
 
     class Meta:
         model = Film
