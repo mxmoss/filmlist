@@ -3,7 +3,8 @@ from films.models import Genre, Film, Theater
 
 class FilmSerializer(serializers.ModelSerializer):
     theater_set = serializers.StringRelatedField(many=True)
-    genre = serializers.StringRelatedField()
+    genre = serializers.PrimaryKeyRelatedField(queryset=Genre.objects.all(), allow_null=True)
+#    genre = serializers.StringRelatedField()
     class Meta:
         model = Film
         fields = ('id', 'title', 'year_prod', 'genre', 'theater_set')
@@ -16,7 +17,6 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class TheaterSerializer(serializers.ModelSerializer):
     films = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all(), allow_null=True)
-
     class Meta:
         model = Theater
         fields = ('id', 'name', 'city', 'state', 'num_screens', 'digital', 'comment_txt', 'films')
