@@ -21,10 +21,10 @@ from films import views
 
 urlpatterns = [
     url(r'(?i)^admin/', admin.site.urls),
-    url(r'(?i)^films$', views.film_list),
-    url(r'(?i)^films/(?P<pk>[0-9]+)$', views.film_detail),
-    url(r'(?i)^theaters$', views.theater_list),
-    url(r'(?i)^theaters/(?P<pk>[0-9]+)$', views.theater_detail),
-    url(r'(?i)^genres$', views.genre_list),
-    url(r'(?i)^genres/(?P<pk>[0-9]+)$', views.genre_detail),
+    url(r'^films$', views.FilmList.as_view()),
+    url(r'^films/(?P<pk>[0-9]+)$', views.FilmDetail.as_view()),
+    url(r'(?i)^theaters$', views.TheaterList.as_view()),
+    url(r'(?i)^theaters/(?P<pk>[0-9]+)$', views.TheaterDetail.as_view()),
+    url(r'(?i)^genres$', views.GenreList.as_view()),
+    url(r'(?i)^genres/(?P<pk>[0-9]+)$', views.GenreDetail.as_view()),
 ]
