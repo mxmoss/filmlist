@@ -52,7 +52,25 @@ class GenreList(generics.ListCreateAPIView):
             return GenreSerializer
         return GenreWriteSerializer
 
+    def get(self, request, *args, **kwargs):
+        k = request.GET.keys()
+        filter_dict = {}
+        if(k):
+            for key, value in request.GET.items():
+                filter_dict[key] = value
+            genres = Genre.objects.filter(**filter_dict)
+            serialized_genres = GenreSerializer(genres, many=True)
+            return Response(serialized_genres.data)
+        else:
+            serialized_genres = GenreSerializer(Genre.objects.all(), many=True)
+            return Response(serialized_genres.data)
+
 class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
+    def get_serializer_class(self):
+        if (self.request.method == 'GET'):
+            return GenreSerializer
+        return GenreWriteSerializer
+
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
