@@ -2,7 +2,7 @@
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
 from films.models import Film, Genre, Theater
-from films.serializers import FilmSerializer, GenreSerializer, TheaterSerializer
+from films.serializers import * #FilmSerializer, FilmWriteSerializer, GenreSerializer, TheaterSerializer
 import logging
 from django.http import Http404
 from rest_framework.views import APIView
@@ -18,17 +18,26 @@ class FilmList(generics.ListCreateAPIView):
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
 
+    def get_serializer_class(self):
+        if(self.request.method == 'GET'):
+            return FilmSerializer
+        return FilmWriteSerializer
+
     def get(self, request, *args, **kwargs):
-        begin_txt = request.GET.get('begins', '')
-        year_prod = request.GET.get('year_prod', '0')
-        # year_prod = 2012
-#        pdb.set_trace()
-        films = Film.objects.filter(year_prod__gte=year_prod, title__istartswith=begin_txt)
-        if not films:
-            return Response('there are no films that match the criteria')
-        else:
+# #this commented-out line shows how to get an arbitrary param
+#        self.request.GET.get('user')
+        k = request.GET.keys()
+        filter_dict = {}
+        if(k):
+            for key, value in request.GET.items():
+                filter_dict[key] = value
+            films = Film.objects.filter(**filter_dict)
             serialized_films = FilmSerializer(films, many=True)
             return Response(serialized_films.data)
+        else:
+            serialized_films = FilmSerializer(Film.objects.all(), many=True)
+            return Response(serialized_films.data)
+
 
 class FilmDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Film.objects.all()
@@ -37,6 +46,11 @@ class FilmDetail(generics.RetrieveUpdateDestroyAPIView):
 class GenreList(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+
+    def get_serializer_class(self):
+        if (self.request.method == 'GET'):
+            return GenreSerializer
+        return GenreWriteSerializer
 
 class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Genre.objects.all()
