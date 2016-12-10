@@ -21,6 +21,7 @@ from films import views
 
 urlpatterns = [
     url(r'(?i)^admin/', admin.site.urls),
+    url(r'^schema$', views.schema_view),
     url(r'^films$', views.FilmList.as_view()),
     url(r'^films/(?P<pk>[0-9]+)$', views.FilmDetail.as_view()),
     url(r'(?i)^theaters$', views.TheaterList.as_view()),

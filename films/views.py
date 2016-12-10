@@ -11,8 +11,12 @@ from rest_framework import status
 
 from rest_framework import generics
 import pdb
+from django.conf.urls import url
+from rest_framework_swagger.views import get_swagger_view
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+schema_view = get_swagger_view(title='Pastebin API')
 
 class FilmList(generics.ListCreateAPIView):
     queryset = Film.objects.all()
