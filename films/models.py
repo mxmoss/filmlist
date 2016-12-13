@@ -14,11 +14,17 @@ class Film(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     year_prod = models.IntegerField(blank=True, )
     genre = models.ForeignKey(Genre, )
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='films', #instead of filme_set you can just use films
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
     #    theaters = models.ManyToManyField('Theater', blank=True,)
     class Meta:
         #        ordering = ('title',)
-        ordering = ('id',)
+        ordering = ('-title',)
 
     def __str__(self):
         return self.title

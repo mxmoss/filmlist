@@ -20,12 +20,15 @@ from films import views
 
 
 urlpatterns = [
-    url(r'(?i)^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^schema$', views.schema_view),
     url(r'^films$', views.FilmList.as_view()),
     url(r'^films/(?P<pk>[0-9]+)$', views.FilmDetail.as_view()),
+    url(r'^films/page(?P<page>[0-9]+)/$', views.FilmList.as_view()),
     url(r'(?i)^theaters$', views.TheaterList.as_view()),
     url(r'(?i)^theaters/(?P<pk>[0-9]+)$', views.TheaterDetail.as_view()),
     url(r'(?i)^genres$', views.GenreList.as_view()),
     url(r'(?i)^genres/(?P<pk>[0-9]+)$', views.GenreDetail.as_view()),
+    url(r'^users/$', views.UserList.as_view()),
+    url(r'^users/(?P<pk>[0-9]+)$', views.UserDetail.as_view()),
 ]

@@ -1,26 +1,51 @@
 # from rest_framework import status
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
+from django.contrib.auth.models import User
 from films.models import Film, Genre, Theater
-from films.serializers import * #FilmSerializer, FilmWriteSerializer, GenreSerializer, TheaterSerializer
+from films.serializers import * #FilmSerializer, FilmWriteSerializer, GenreSerializer, TheaterSerializer, UserSerializer
 import logging
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-from rest_framework import generics
+from rest_framework import generics, permissions
 import pdb
 from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework.pagination import PageNumberPagination
+from films.permissions import IsOwnerOrReadOnly
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 schema_view = get_swagger_view(title='Pastebin API')
 
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+# class StandardResultsSetPagination(PageNumberPagination):
+#     page_size = 20
+#     page_size_query_param = 'page_size'
+#     max_page_size = 100
+#
+class ShortResultsSetPagination(PageNumberPagination):
+    page_size = 1
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
 class FilmList(generics.ListCreateAPIView):
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
+    pagination_class =  ShortResultsSetPagination
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def get_serializer_class(self):
         if(self.request.method == 'GET'):
@@ -46,6 +71,7 @@ class FilmList(generics.ListCreateAPIView):
 class FilmDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Film.objects.all()
     serializer_class = FilmSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 class GenreList(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
