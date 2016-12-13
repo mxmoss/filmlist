@@ -3,13 +3,15 @@ from films.models import Genre, Film, Theater
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    films = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all())
-    theaters = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
-    genres = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all(), allow_null=True)
+    #If you uncomment the following, it will show all films, theaters, genres, added by each user
+    # films = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all())
+    # theaters = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
+    # genres = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all(), allow_null=True)
 
     class Meta:
         model = User
-        fields= ('id','username', 'films', 'theaters', 'genres')
+        fields= ('id','username') #, 'films', 'theaters', 'genres')
+#        fields= ('id','username', 'films', 'theaters', 'genres')
 
 class FilmSerializer(serializers.ModelSerializer):
     theater_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
