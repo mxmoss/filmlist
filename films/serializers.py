@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     films = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all())
+    theaters = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
+    genres = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all(), allow_null=True)
 
     class Meta:
         model = User
-        fields= ('id','username', 'films')
+        fields= ('id','username', 'films', 'theaters', 'genres')
 
 class FilmSerializer(serializers.ModelSerializer):
     theater_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
@@ -26,12 +28,13 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class TheaterSerializer(serializers.ModelSerializer):
     films = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all(), allow_null=True, required=False,)
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Theater
-        fields = ('id', 'name', 'city', 'state', 'num_screens', 'digital', 'comment_txt', 'films')
+        fields = ('id', 'name', 'city', 'state', 'num_screens', 'digital', 'comment_txt', 'films', 'owner')
 
 class FilmWriteSerializer(serializers.ModelSerializer):
-#    theater_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
+    theater_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Theater.objects.all(), required=False, )
     genre = serializers.PrimaryKeyRelatedField(queryset=Genre.objects.all(), allow_null=True)
     owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
@@ -40,7 +43,8 @@ class FilmWriteSerializer(serializers.ModelSerializer):
 
 class GenreWriteSerializer(serializers.ModelSerializer):
     film_set = serializers.PrimaryKeyRelatedField(many=True, queryset=Film.objects.all(), allow_null=True, required=False,)
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Genre
-        fields = ('id', 'description', 'film_set')
+        fields = ('id', 'description', 'film_set', 'owner')
 

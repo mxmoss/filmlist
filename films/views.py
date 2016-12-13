@@ -76,6 +76,10 @@ class FilmDetail(generics.RetrieveUpdateDestroyAPIView):
 class GenreList(generics.ListCreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
     def get_serializer_class(self):
         if (self.request.method == 'GET'):
@@ -103,12 +107,19 @@ class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 class TheaterList(generics.ListCreateAPIView):
     queryset = Theater.objects.all()
     serializer_class = TheaterSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
 
 class TheaterDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Theater.objects.all()
     serializer_class = TheaterSerializer
+
 

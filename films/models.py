@@ -2,6 +2,12 @@ from django.db import models
 
 class Genre(models.Model):
     description = models.CharField(max_length=20, blank=True, default='')
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='genres',
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
     class Meta:
         ordering = ('description',)
@@ -16,7 +22,7 @@ class Film(models.Model):
     genre = models.ForeignKey(Genre, )
     owner = models.ForeignKey(
         'auth.User',
-        related_name='films', #instead of filme_set you can just use films
+        related_name='films', #instead of film_set you can just use films
         on_delete=models.CASCADE,
         null=True,
     )
@@ -37,6 +43,12 @@ class Theater(models.Model):
     digital = models.BooleanField()
     comment_txt = models.CharField(max_length=255, blank=True, default='')
     films = models.ManyToManyField(Film)
+    owner = models.ForeignKey(
+        'auth.User',
+        related_name='theaters', #instead of filme_set you can just use films
+        on_delete=models.CASCADE,
+        null=True,
+    )
 
     class Meta:
         #        ordering = ('state', 'city', 'name',)
