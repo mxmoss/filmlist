@@ -31,4 +31,6 @@ urlpatterns = [
     url(r'(?i)^genres/(?P<pk>[0-9]+)$', views.GenreDetail.as_view()),
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)$', views.UserDetail.as_view()),
+#    url(r'^film_title$', views.film_title(request)),
+    url(r'^titles$', views.film_title),
 ]

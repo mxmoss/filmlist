@@ -1,6 +1,6 @@
 # from rest_framework import status
-# from rest_framework.decorators import api_view
-# from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.contrib.auth.models import User
 from films.models import Film, Genre, Theater
 from films.serializers import * #FilmSerializer, FilmWriteSerializer, GenreSerializer, TheaterSerializer, UserSerializer
@@ -15,10 +15,33 @@ from django.conf.urls import url
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.pagination import PageNumberPagination
 from films.permissions import IsOwnerOrReadOnly
+import requests
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 schema_view = get_swagger_view(title='Pastebin API')
+
+@api_view(['GET'])
+def film_title(request, format=None):
+    #get a list of films
+    if request.method == 'GET':
+#        films = requests.get('http://www.omdbapi.com/?type=movie&s=hunger')
+        payload = request.query_params #GET.keys()
+        if not(payload):
+            payload = {'type': 'movie', 's': 'any'}
+        films = requests.get('http://www.omdbapi.com/', params=payload)
+        json = films.json()
+        a = []
+        for key in json['Search']:
+            films_dict = {}
+            films_dict['title'] = key['Title']
+            films_dict['year_prod'] = key['Year']
+            a.append(films_dict)
+        serializedFilm = FilmSerializer(a, many=True)
+#        if serializedFilm.is_valid():
+#            serializedFilm.save()
+        return Response(serializedFilm.data)
+
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
