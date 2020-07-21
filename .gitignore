@@ -1,3 +1,5 @@
+.idea/*
+filmlist/*
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -45,20 +47,9 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-.idea/vcs.xml
-.idea/workspace.xml
-*.pyc
-*.pyc
-*.pyc
 *.pyc
 db.sqlite3
 *.pyc
-.idea/workspace.xml
 db.sqlite3
 filmlist/__pycache__/urls.cpython-35.pyc
-.idea/workspace.xml
-.idea/filmlist.iml
-.idea/modules.xml
-.idea/misc.xml
-.idea/workspace.xml___jb_tmp___
 secret.txt
