@@ -19,13 +19,16 @@ class Genre(models.Model):
 class Film(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     year_prod = models.IntegerField(blank=True, )
-    genre = models.ForeignKey(Genre, )
+    genre = models.ForeignKey(Genre,
+        on_delete=models.CASCADE,
+    )
     owner = models.ForeignKey(
         'auth.User',
-        related_name='films', #instead of film_set you can just use films
         on_delete=models.CASCADE,
+        related_name='films', 
         null=True,
     )
+
 
     #    theaters = models.ManyToManyField('Theater', blank=True,)
     class Meta:
