@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics, permissions
 import pdb
-from django.conf.urls import url
+from django.urls import re_path
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.pagination import PageNumberPagination
 from films.permissions import IsOwnerOrReadOnly
